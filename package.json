@@ -1,5 +1,5 @@
 {
-  "name": "create-test-server",
+  "name": "@osa413/create-test-server",
   "version": "3.0.1",
   "description": "Creates a minimal Express server for testing",
   "main": "src/index.js",
