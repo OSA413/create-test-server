@@ -1,17 +1,13 @@
 "use strict";
 
 const http = require("http");
-const https = require("https");
 const express = require("express");
 const pify = require("pify");
-// const createCert = require('create-cert');
 const bodyParser = require("body-parser");
 
 const createTestServer = (opts = {}) => {
     const server = express();
     server.http = http.createServer(server);
-    // server.https = https.createServer(keys, server);
-    // server.caCert = keys.caCert;
 
     server.set("etag", false);
 
@@ -46,10 +42,6 @@ const createTestServer = (opts = {}) => {
             server.port = server.http.address().port;
             server.url = `http://localhost:${server.port}`;
         }),
-        // pify(server.https.listen.bind(server.https))().then(() => {
-        // 	server.sslPort = server.https.address().port;
-        // 	server.sslUrl = `https://localhost:${server.sslPort}`;
-        // })
     ]);
 
     server.close = () => Promise.all([
@@ -57,10 +49,6 @@ const createTestServer = (opts = {}) => {
             server.port = undefined;
             server.url = undefined;
         }),
-        // pify(server.https.close.bind(server.https))().then(() => {
-        // 	server.sslPort = undefined;
-        // 	server.sslUrl = undefined;
-        // })
     ]);
 
     return server.listen().then(() => server);

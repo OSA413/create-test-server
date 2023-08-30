@@ -4,11 +4,9 @@
   "description": "Creates a minimal Express server for testing",
   "main": "src/index.js",
   "scripts": {
-    "test": "xo && nyc ava",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
-  },
-  "xo": {
-    "extends": "xo-lukechilds"
+    "test": "jest --",
+    "test:watch": "jest --watch --",
+    "test:cov": "jest --coverage --"
   },
   "repository": {
     "type": "git",
@@ -37,9 +35,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",
-    "ava": "^0.25.0",
     "coveralls": "^3.0.0",
-    "eslint-config-xo-lukechilds": "^1.0.0",
     "got": "^8.0.0",
     "jest": "^29.6.4",
     "nyc": "^11.0.2",
