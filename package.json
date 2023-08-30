@@ -36,11 +36,14 @@
     "pify": "^3.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.4",
     "ava": "^0.25.0",
     "coveralls": "^3.0.0",
     "eslint-config-xo-lukechilds": "^1.0.0",
     "got": "^8.0.0",
+    "jest": "^29.6.4",
     "nyc": "^11.0.2",
+    "ts-jest": "^29.1.1",
     "xo": "^0.19.0"
   }
 }
