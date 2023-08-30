@@ -9,9 +9,9 @@
 
 Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
 
-A simple interface for creating a preconfigured Express instance listening for both HTTP and HTTPS traffic.
+A simple interface for creating a preconfigured Express instance listening for HTTP traffic.
 
-Ports are chosen at random for HTTP/HTTPS. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
+Ports are chosen at random for HTTP. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
 
 Created because mocking is dirty and can [break between Node.js releases](https://github.com/node-nock/nock/issues/922). Why mock HTTP requests when you can test locally against a real server in a few lines code?
 
@@ -29,8 +29,6 @@ const createTestServer = require('create-test-server');
 const server = await createTestServer();
 console.log(server.url);
 // http://localhost:5486
-console.log(server.sslUrl);
-// https://localhost:5487
 
 // This is just an Express route
 // You could use any Express middleware too
@@ -42,7 +40,7 @@ server.get('/foo', (req, res) => {
 server.get('/foo', () => 'bar');
 server.get('/foo', 'bar');
 
-// server.url + '/foo' and server.sslUrl + '/foo' will respond with 'bar'
+// server.url + '/foo' will respond with 'bar'
 ```
 
 The following `Content-Type` headers will be parsed and exposed via `req.body`:
@@ -99,39 +97,6 @@ test.after(async () => {
 });
 ```
 
-You can also make properly authenticated SSL requests by setting a common name for the server certificate and validating against the provided CA certificate:
-
-```js
-test(async t => {
-  const server = await createTestServer({ certificate: 'foobar.com' });
-  server.get('/foo', 'bar');
-
-  const response = await got(`${server.sslUrl}/foo`, {
-    ca: server.caCert,
-    headers: { host: 'foobar.com' }
-  });
-  t.is(response.body, 'bar');
-
-  await server.close();
-});
-```
-
-You can still make an SSL connection without messing about with certificates if your client supports unauthorised SSL requests:
-
-```js
-test(async t => {
-  const server = await createTestServer();
-  server.get('/foo', 'bar');
-
-  const response = await got(`${server.sslUrl}/foo`, {
-    rejectUnauthorized: false
-  });
-  t.is(response.body, 'bar');
-
-  await server.close();
-});
-```
-
 You can also easily stop/restart the server. Notice how a new port is used when we listen again:
 
 ```js
@@ -157,13 +122,6 @@ Returns a Promise which resolves to an (already listening) server.
 #### options
 
 Type: `object`
-
-##### options.certificate
-
-Type: `string`, `object`<br>
-Default: `undefined`
-
-SSL certificate options to be passed to [`createCert()`](https://github.com/lukechilds/create-cert).
 
 ##### options.bodyParser
 
@@ -200,51 +158,19 @@ e.g: `5486`
 
 `undefined` while the server is not listening.
 
-#### server.sslUrl
-
-Type: `string`, `undefined`
-
-The url you can reach the HTTPS server on.
-
-e.g: `'https://localhost:5487'`
-
-`undefined` while the server is not listening.
-
-#### server.sslPort
-
-Type: `number`, `undefined`
-
-The port number you can reach the HTTPS server on.
-
-e.g: `5487`
-
-`undefined` while the server is not listening.
-
-#### server.caCert
-
-Type: `string`
-
-The CA certificate to validate the server certificate against.
-
 #### server.http
 
 Type: [`http.server`](https://nodejs.org/api/http.html#http_class_http_server)
 
 The underlying HTTP server instance.
 
-#### server.https
-
-Type: [`https.server`](https://nodejs.org/api/https.html#https_class_https_server)
-
-The underlying HTTPS server instance.
-
 #### server.listen()
 
 Type: `function`
 
-Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
+Returns a Promise that resolves when the HTTP server is listening.
 
-Once the servers are listening, `server.url` and `server.sslUrl` will be updated.
+Once the server is listening, `server.url` will be updated.
 
 Please note, this function doesn't take a port argument, it uses a new randomised port each time. Also, you don't need to manually call this after creating a server, it will start listening automatically.
 
@@ -252,14 +178,6 @@ Please note, this function doesn't take a port argument, it uses a new randomise
 
 Type: `function`
 
-Returns a Promise that resolves when both the HTTP and HTTPS servers have stopped listening.
+Returns a Promise that resolves  when the HTTP server has stopped listening.
 
-Once the servers have stopped listening, `server.url` and `server.sslUrl` will be set to `undefined`.
-
-## Related
-
-- [`create-cert`](https://github.com/lukechilds/create-cert) - Super simple self signed certificates
-
-## License
-
-MIT © Luke Childs
+Once the servers have stopped listening, `server.url` will be set to `undefined`.
