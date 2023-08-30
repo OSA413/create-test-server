@@ -15,10 +15,7 @@ test('server instance exposes useful properties', async t => {
 	const server = await createTestServer();
 
 	t.true(typeof server.port === 'number');
-	t.true(typeof server.sslPort === 'number');
 	t.true(typeof server.url === 'string');
-	t.true(typeof server.sslUrl === 'string');
-	t.true(typeof server.caCert === 'string');
 	t.true(typeof server.listen === 'function');
 	t.true(typeof server.close === 'function');
 });
@@ -66,17 +63,6 @@ test('server uses a new port on each listen', async t => {
 	await server.listen();
 
 	t.not(origPort, server.port);
-});
-
-test('server listens for SSL traffic', async t => {
-	const server = await createTestServer();
-
-	server.get('/foo', (req, res) => {
-		res.send('bar');
-	});
-
-	const { body } = await got(server.sslUrl + '/foo', { rejectUnauthorized: false });
-	t.is(body, 'bar');
 });
 
 test('server automatically parses JSON request body', async t => {
@@ -137,20 +123,6 @@ test('server automatically parses binary request body', async t => {
 		headers: { 'content-type': 'application/octet-stream' },
 		body: buffer
 	});
-});
-
-test('opts.certificate is passed through to createCert()', async t => {
-	const server = await createTestServer({ certificate: 'foo.bar' });
-
-	server.get('/foo', (req, res) => {
-		res.send('bar');
-	});
-
-	const { body } = await got(server.sslUrl + '/foo', {
-		ca: server.caCert,
-		headers: { host: 'foo.bar' }
-	});
-	t.is(body, 'bar');
 });
 
 test('opts.bodyParser is passed through to bodyParser', async t => {
@@ -243,14 +215,12 @@ test('accepts multiple callbacks in `.get()`', async t => {
 	t.is(body, 'bar');
 });
 
-test('raw http and https servers are exposed', async t => {
+test('raw http server is exposed', async t => {
 	const server = await createTestServer();
 
 	t.true(server.http.listening);
-	t.true(server.https.listening);
 
 	await server.close();
 
 	t.false(server.http.listening);
-	t.false(server.https.listening);
 });
