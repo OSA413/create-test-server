@@ -54,4 +54,4 @@ const createTestServer = (opts = {}) => {
     return server.listen().then(() => server);
 };
 
-module.exports = createTestServer;
+export default createTestServer;

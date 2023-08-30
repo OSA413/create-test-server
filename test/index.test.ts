@@ -1,8 +1,8 @@
 
-import * as createTestServer from '../src';
-
+import createTestServer from '../src';
+import { expect, test } from 'vitest'
 import * as querystring from 'querystring';
-import * as got from 'got';
+import axios from 'axios';
 
 test('server instance exposes useful properties', async () => {
 	const server = await createTestServer();
@@ -20,8 +20,8 @@ test('express endpoint', async () => {
 		res.send('bar');
 	});
 
-	const { body } = await got(server.url + '/foo');
-	expect(body).toEqual('bar');
+	const { data } = await axios.get(server.url + '/foo');
+	expect(data).toEqual('bar');
 });
 
 test('server can be stopped and restarted', async () => {
@@ -31,19 +31,19 @@ test('server can be stopped and restarted', async () => {
 		res.send('bar');
 	});
 
-	const { body } = await got(server.url + '/foo');
-	expect(body).toEqual('bar');
+	const { data } = await axios.get(server.url + '/foo');
+	expect(data).toEqual('bar');
 
 	const closedUrl = server.url;
 	await server.close();
 
-	await got(closedUrl + '/foo', { timeout: 100 }).catch(err => {
-		expect(err.code).toEqual('ETIMEDOUT');
+	await axios(closedUrl + '/foo', { timeout: 100 }).catch(err => {
+		expect(err.code).toEqual('ECONNREFUSED');
 	});
 
 	await server.listen();
 
-	const { body: bodyRestarted } = await got(server.url + '/foo');
+	const { data: bodyRestarted } = await axios.get(server.url + '/foo');
 	expect(bodyRestarted).toEqual('bar');
 });
 
@@ -65,9 +65,8 @@ test('server automatically parses JSON request body', async () => {
 		res.end();
 	});
 
-	await got.post(server.url + '/echo', {
+	await axios.post(server.url + '/echo', JSON.stringify(object), {
 		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(object)
 	});
 });
 
@@ -80,9 +79,8 @@ test('server automatically parses text request body', async () => {
 		res.end();
 	});
 
-	await got.post(server.url + '/echo', {
+	await axios.post(server.url + '/echo', text, {
 		headers: { 'content-type': 'text/plain' },
-		body: text
 	});
 });
 
@@ -95,9 +93,8 @@ test('server automatically parses URL-encoded form request body', async () => {
 		res.end();
 	});
 
-	await got.post(server.url + '/echo', {
+	await axios.post(server.url + '/echo', querystring.stringify(object), {
 		headers: { 'content-type': 'application/x-www-form-urlencoded' },
-		body: querystring.stringify(object)
 	});
 });
 
@@ -110,9 +107,8 @@ test('server automatically parses binary request body', async () => {
 		res.end();
 	});
 
-	await got.post(server.url + '/echo', {
+	await axios.post(server.url + '/echo', buffer, {
 		headers: { 'content-type': 'application/octet-stream' },
-		body: buffer
 	});
 });
 
@@ -157,9 +153,8 @@ test('if opts.bodyParser is false body parsing middleware is disabled', async ()
 		res.end();
 	});
 
-	await got.post(server.url + '/echo', {
+	await axios.post(server.url + '/echo', text, {
 		headers: { 'content-type': 'text/plain' },
-		body: text
 	});
 });
 
@@ -170,9 +165,9 @@ test('support returning body directly', async () => {
 	server.get('/bar', () => ({ foo: 'bar' }));
 	server.get('/async', () => Promise.resolve('bar'));
 
-	const bodyString = (await got(server.url + '/foo')).body;
-	const bodyJson = (await got(server.url + '/bar', { json: true })).body;
-	const bodyAsync = (await got(server.url + '/async')).body;
+	const bodyString = (await axios.get(server.url + '/foo')).data;
+	const bodyJson = (await axios.get(server.url + '/bar')).data;
+	const bodyAsync = (await axios.get(server.url + '/async')).data;
 	expect(bodyString).toEqual('bar');
 	expect(bodyJson).toEqual({ foo: 'bar' });
 	expect(bodyAsync).toEqual('bar');
@@ -185,9 +180,9 @@ test('support returning body directly without wrapping in function', async () =>
 	server.get('/bar', ({ foo: 'bar' }));
 	server.get('/async', Promise.resolve('bar'));
 
-	const bodyString = (await got(server.url + '/foo')).body;
-	const bodyJson = (await got(server.url + '/bar', { json: true })).body;
-	const bodyAsync = (await got(server.url + '/async')).body;
+	const bodyString = (await axios.get(server.url + '/foo')).data;
+	const bodyJson = (await axios.get(server.url + '/bar')).data;
+	const bodyAsync = (await axios.get(server.url + '/async')).data;
 	expect(bodyString).toEqual('bar');
 	expect(bodyJson).toEqual({ foo: 'bar' });
 	expect(bodyAsync).toEqual('bar');
@@ -201,8 +196,8 @@ test('accepts multiple callbacks in `.get()`', async () => {
 		next();
 	}, (req, res) => res.get('foo'));
 
-	const { body } = await got(server.url + '/foo');
-	expect(body).toEqual('bar');
+	const { data } = await axios.get(server.url + '/foo');
+	expect(data).toEqual('bar');
 });
 
 test('raw http server is exposed', async () => {

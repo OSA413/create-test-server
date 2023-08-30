@@ -4,9 +4,8 @@
   "description": "Creates a minimal Express server for testing",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --",
-    "test:watch": "jest --watch --",
-    "test:cov": "jest --coverage --"
+    "test": "vitest --",
+    "test:cov": "vitest --coverage --"
   },
   "repository": {
     "type": "git",
@@ -35,11 +34,14 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",
+    "@vitest/coverage-v8": "^0.34.3",
+    "axios": "^1.5.0",
     "coveralls": "^3.0.0",
     "got": "^8.0.0",
     "jest": "^29.6.4",
     "nyc": "^11.0.2",
     "ts-jest": "^29.1.1",
+    "vitest": "^0.34.3",
     "xo": "^0.19.0"
   }
 }
