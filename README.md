@@ -24,7 +24,7 @@ npm i -D @osa413/create-test-server
 ## Usage
 
 ```js
-const createTestServer = require('create-test-server');
+import createTestServer from "@osa413/create-test-server";
 
 const server = await createTestServer();
 console.log(server.url);
@@ -59,7 +59,7 @@ You can create a separate server per test:
 ```js
 import test from 'ava';
 import got from 'got';
-import createTestServer from 'create-test-server';
+import createTestServer from "@osa413/create-test-server";
 
 test(async t => {
   const server = await createTestServer();
