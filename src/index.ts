@@ -7,7 +7,7 @@ import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
 // Thank @midgleyc for providing the type definitions
-type ResultServer = TestServer & Omit<express.Express, 'listen'> & {get: (url: string, response: string) => void};
+type TestServer = TestServerWrapper & Omit<express.Express, 'listen'> & {get: (url: string, response: string) => void};
 
 interface Options {
     /**
@@ -18,7 +18,7 @@ interface Options {
     bodyParser?: false | OptionsJson & OptionsText & OptionsUrlencoded;
 }
 
-interface TestServer {
+interface TestServerWrapper {
     /**
      * The url you can reach the HTTP server on.
      *
@@ -40,25 +40,25 @@ interface TestServer {
      */
     http: http.Server;
     /**
-     * Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
+     * Returns a Promise that resolves when the HTTP server is listening.
      *
-     * Once the servers are listening, `server.url` and `server.sslUrl` will be updated.
+     * Once the server is listening, `server.url` will be updated.
      *
      * Please note, this function doesn't take a port argument, it uses a new randomised port each time.
      * Also, you don't need to manually call this after creating a server, it will start listening automatically.
      */
     listen: () => Promise<void>;
     /**
-     * Returns a Promise that resolves when both the HTTP and HTTPS servers have stopped listening.
+     * Returns a Promise that resolves when the HTTP server has stopped listening.
      *
-     * Once the servers have stopped listening, `server.url` and `server.sslUrl` will be set to undefined.
+     * Once the servers have stopped listening, `server.url` will be set to undefined.
      */
     close: () => Promise<void>;
 }
 
-const createTestServer = (opts: Options = {}): Promise<ResultServer> => {
+const createTestServer = (opts: Options = {}): Promise<TestServer> => {
     const _express = express();
-    const server = _express as never as ResultServer;
+    const server = _express as never as TestServer;
     server.http = http.createServer(_express);
 
     server.set("etag", false);
