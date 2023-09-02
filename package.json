@@ -1,11 +1,12 @@
 {
   "name": "@osa413/create-test-server",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Minimal Express server for tests, simpler",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "scripts": {
     "test": "vitest --",
+    "test:ci": "vitest run --",
     "test:cov": "vitest --coverage --",
     "test:muts": "stryker run",
     "build": "tsup src/index.ts --format cjs,esm --dts"
