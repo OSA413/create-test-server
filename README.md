@@ -2,16 +2,16 @@
 
 > Creates a minimal Express server for testing
 
-[![Build Status](https://travis-ci.org/lukechilds/create-test-server.svg?branch=master)](https://travis-ci.org/lukechilds/create-test-server)
-[![Coverage Status](https://coveralls.io/repos/github/lukechilds/create-test-server/badge.svg?branch=master)](https://coveralls.io/github/lukechilds/create-test-server?branch=master)
-[![npm](https://img.shields.io/npm/dm/create-test-server.svg)](https://www.npmjs.com/package/create-test-server)
-[![npm](https://img.shields.io/npm/v/create-test-server.svg)](https://www.npmjs.com/package/create-test-server)
+[Build Status]
+[Coverage Status]
+[![npm](https://img.shields.io/npm/dm/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
+[![npm](https://img.shields.io/npm/v/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
 
 Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
 
 A simple interface for creating a preconfigured Express instance listening for HTTP traffic.
 
-Ports are chosen at random for HTTP. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
+Ports are chosen at random for HTTP.
 
 Created because mocking is dirty and can [break between Node.js releases](https://github.com/node-nock/nock/issues/922). Why mock HTTP requests when you can test locally against a real server in a few lines code?
 
