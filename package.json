@@ -1,6 +1,6 @@
 {
   "name": "@osa413/create-test-server",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Minimal Express server for tests, simpler",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
