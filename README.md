@@ -18,7 +18,7 @@ Created because mocking is dirty and can [break between Node.js releases](https:
 ## Install
 
 ```shell
-npm install --save-dev create-test-server
+npm i -D @osa413/create-test-server
 ```
 
 ## Usage

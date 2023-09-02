@@ -1,11 +1,13 @@
 {
   "name": "@osa413/create-test-server",
-  "version": "3.0.1",
-  "description": "Creates a minimal Express server for testing",
-  "main": "src/index.js",
+  "version": "3.0.2",
+  "description": "Minimal Express server for tests, simpler",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "scripts": {
     "test": "vitest --",
-    "test:cov": "vitest --coverage --"
+    "test:cov": "vitest --coverage --",
+    "build": "tsup src/index.js --format cjs,esm"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,7 @@
     "http",
     "express"
   ],
-  "author": "Luke Childs <lukechilds123@gmail.com> (http://lukechilds.co.uk)",
+  "author": "OSA413",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/OSA413/create-test-server/issues"
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^0.34.3",
     "axios": "^1.5.0",
+    "tsup": "^7.2.0",
     "vitest": "^0.34.3"
   }
 }
