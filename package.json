@@ -1,13 +1,13 @@
 {
   "name": "@osa413/create-test-server",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Minimal Express server for tests, simpler",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "scripts": {
     "test": "vitest --",
     "test:cov": "vitest --coverage --",
-    "build": "tsup src/index.js --format cjs,esm"
+    "build": "tsup src/index.ts --format cjs,esm --dts"
   },
   "repository": {
     "type": "git",

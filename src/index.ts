@@ -5,7 +5,7 @@ const express = require("express");
 const pify = require("pify");
 const bodyParser = require("body-parser");
 
-const createTestServer = (opts = {}) => {
+const createTestServer = (opts = { bodyParser: true }) => {
     const server = express();
     server.http = http.createServer(server);
 
