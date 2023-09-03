@@ -52,21 +52,21 @@ The following `Content-Type` headers will be parsed and exposed via `req.body`:
 
 You can change body parsing behaviour with the [`bodyParser`](#optionsbodyparser) option.
 
-`createTestServer()` has a Promise based API that pairs well with a modern asynchronous test runner such as [AVA](https://github.com/avajs/ava).
+You can use `createTestServer()` with your favourite test runners, such as Jest or Vitest.
 
 You can create a separate server per test:
 
 ```js
-import test from 'ava';
-import got from 'got';
+import {test, expect} from 'vitest';
+import axios from 'axios';
 import createTestServer from "@osa413/create-test-server";
 
-test(async t => {
+test(async () => {
   const server = await createTestServer();
   server.get('/foo', 'bar');
 
-  const response = await got(`${server.url}/foo`);
-  t.is(response.body, 'bar');
+  const response = await axios.get(`${server.url}/foo`);
+  expect(response.body).toEqual('bar');
 
   await server.close();
 });
@@ -77,23 +77,23 @@ Or share a server across multiple tests:
 ```js
 let server;
 
-test.before(async () => {
+beforeAll(async () => {
   server = await createTestServer();
   server.get('/foo', 'bar');
 });
 
-test(async t => {
-  const response = await got(`${server.url}/foo`);
-  t.is(response.body, 'bar');
+test(async () => {
+  const response = await axios.get(`${server.url}/foo`);
+  expect(response.body).toEqual('bar');
 });
 
-test(async t => {
-  const response = await got(`${server.url}/foo`);
-  t.is(response.statusCode, 200);
+test(async () => {
+  const response = await axios.get(`${server.url}/foo`);
+  expect(response.statusCode).toEqual(200);
 });
 
-test.after(async () => {
-	await server.close();
+afterAll(async () => {
+  await server.close();
 });
 ```
 
