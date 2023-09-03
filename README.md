@@ -1,13 +1,17 @@
-# create-test-server
+# @osa413/create-test-server
 
-> Creates a minimal Express server for testing
+> Minimal Express server for tests, simpler
 
 [Build Status]
 [Coverage Status]
 [![npm](https://img.shields.io/npm/dm/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
 [![npm](https://img.shields.io/npm/v/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
 
-Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
+Fork of [@lukechilds's create-test-server](https://github.com/lukechilds/create-test-server) that removes HTTPS requirement and adds some fresh ingredients.
+
+Supports both legacy (Jest) and modern (vitest) test runners.
+
+Original project inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
 
 A simple interface for creating a preconfigured Express instance listening for HTTP traffic.
 
