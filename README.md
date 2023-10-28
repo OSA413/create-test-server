@@ -15,10 +15,6 @@ Original project inspired by the `createServer()` helper function in the [Got te
 
 A simple interface for creating a preconfigured Express instance listening for HTTP traffic.
 
-Ports are chosen at random for HTTP.
-
-Created because mocking is dirty and can [break between Node.js releases](https://github.com/node-nock/nock/issues/922). Why mock HTTP requests when you can test locally against a real server in a few lines code?
-
 ## Install
 
 ```shell
