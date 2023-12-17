@@ -38,7 +38,7 @@ test('server can be stopped and restarted', async () => {
 	await server.close();
 
 	await axios(closedUrl + '/foo', { timeout: 100 }).catch(err => {
-		expect(err.code).toEqual('ECONNREFUSED');
+		expect(err.code).toEqual('ECONNRESET');
 	});
 
 	await server.listen();
