@@ -1,15 +1,15 @@
 "use strict";
 
-import http, {Server} from "http";
+import http from "http";
 import { AddressInfo } from "net";
 import express from "express";
 import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
 // Thank @midgleyc for providing the type definitions
-type TestServer = TestServerWrapper & Omit<express.Express, 'listen'> & {get: (url: string, response: string) => void};
+export type TestServer = TestServerWrapper & Omit<express.Express, 'listen'> & {get: (url: string, response: string) => void};
 
-interface Options {
+export interface Options {
     /**
      * Body parser options object to be passed to `body-parser` methods.
      *
@@ -18,7 +18,7 @@ interface Options {
     bodyParser?: false | OptionsJson & OptionsText & OptionsUrlencoded;
 }
 
-interface TestServerWrapper {
+export interface TestServerWrapper {
     /**
      * The url you can reach the HTTP server on.
      *
