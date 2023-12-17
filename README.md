@@ -23,6 +23,8 @@ npm i -D @osa413/create-test-server
 
 ## Usage
 
+**Forward slash at the beginning of endpoint name is important**
+
 ```js
 import createTestServer from "@osa413/create-test-server";
 
@@ -32,11 +34,13 @@ console.log(server.url);
 
 // This is just an Express route
 // You could use any Express middleware too
+// **Forward slash at the beginning of endpoint name is important**
 server.get('/foo', (req, res) => {
   res.send('bar');
 });
 
 // You can return a body directly too
+// **Forward slash at the beginning of endpoint name is important**
 server.get('/foo', () => 'bar');
 server.get('/foo', 'bar');
 
