@@ -1,0 +1,5 @@
+{
+    "name": "@osa413/create-test-server",
+    "version": "3.2.0",
+    "exports": "./src/index.ts"
+}
