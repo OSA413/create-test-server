@@ -6,6 +6,8 @@
 [Coverage Status]
 [![npm](https://img.shields.io/npm/dm/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
 [![npm](https://img.shields.io/npm/v/%40osa413/create-test-server.svg)](https://www.npmjs.com/package/@osa413/create-test-server)
+[![JSR](https://jsr.io/badges/@osa413/create-test-server)](https://jsr.io/@osa413/create-test-server)
+[![JSR](https://jsr.io/badges/@osa413/create-test-server/score)](https://jsr.io/@osa413/create-test-server)
 
 Fork of [@lukechilds's create-test-server](https://github.com/lukechilds/create-test-server) that removes HTTPS requirement and adds some fresh ingredients.
 
