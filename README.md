@@ -18,7 +18,12 @@ A simple interface for creating a preconfigured Express instance listening for H
 ## Install
 
 ```shell
+# NPM
 npm i -D @osa413/create-test-server
+# Deno
+deno add @osa413/create-test-server
+# JSR
+npx jsr add @osa413/create-test-server
 ```
 
 ## Usage
