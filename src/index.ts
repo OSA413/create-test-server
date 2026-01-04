@@ -6,9 +6,9 @@ import express from "express";
 import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
-// Thank @midgleyc for providing the initial type definitions
+// Thank to @midgleyc for providing the initial type definitions
 
-// TODO: add proper type definition for the response function to accept rounter function, function, and literal value
+/** The function that represents augmented HTTP methods of the test server */
 export type TestServerRouterFunction = (url: string, responseOrFunction: unknown) => void;
 
 /** The test server itself */
