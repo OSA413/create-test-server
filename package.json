@@ -32,17 +32,17 @@
   },
   "homepage": "https://github.com/OSA413/create-test-server",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.15.3",
-    "pify": "^3.0.0"
+    "body-parser": "^2.2.1",
+    "express": "^5.2.1",
+    "pify": "^6.1.0"
   },
   "devDependencies": {
-    "@stryker-mutator/vitest-runner": "^7.1.1",
-    "@types/express": "^4.17.17",
-    "@types/pify": "^5.0.1",
-    "@vitest/coverage-v8": "^0.34.3",
+    "@stryker-mutator/vitest-runner": "^9.4.0",
+    "@types/express": "^5.0.6",
+    "@types/pify": "^6.1.0",
+    "@vitest/coverage-v8": "^4.0.16",
     "axios": "^1.5.0",
-    "tsup": "^7.2.0",
-    "vitest": "^0.34.3"
+    "tsup": "^8.5.1",
+    "vitest": "^4.0.16"
   }
 }
