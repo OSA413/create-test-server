@@ -189,6 +189,6 @@ Please note, this function doesn't take a port argument, it uses a new randomise
 
 Type: `function`
 
-Returns a Promise that resolves  when the HTTP server has stopped listening.
+Returns a Promise that resolves when the HTTP server has stopped listening.
 
 Once the servers have stopped listening, `server.url` will be set to `undefined`.
