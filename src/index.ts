@@ -7,7 +7,9 @@ import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
 // Thank @midgleyc for providing the type definitions
-export type TestServer = TestServerWrapper & Omit<express.Express, 'listen'> & {get: (url: string, response: string) => void};
+export type TestServer = TestServerWrapper
+    & Omit<express.Express, 'listen'>
+    & {get: (url: string, response: unknown) => void};
 
 export interface Options {
     /**
@@ -15,7 +17,10 @@ export interface Options {
      *
      * If set to `false` then all body parsing middleware will be disabled.
      */
-    bodyParser?: false | OptionsJson & OptionsText & OptionsUrlencoded;
+    bodyParser?: false |
+        OptionsJson
+        & OptionsText
+        & OptionsUrlencoded;
 }
 
 export interface TestServerWrapper {
@@ -56,7 +61,7 @@ export interface TestServerWrapper {
     close: () => Promise<void>;
 }
 
-const createTestServer = (opts: Options = {}): Promise<TestServer> => {
+export const createTestServer = (opts: Options = {}): Promise<TestServer> => {
     const _express = express();
     const server = _express as never as TestServer;
     server.http = http.createServer(_express);
@@ -70,7 +75,12 @@ const createTestServer = (opts: Options = {}): Promise<TestServer> => {
         server.use(bodyParser.raw(Object.assign({ limit: "1mb", type: "application/octet-stream" }, opts.bodyParser)));
     }
 
-    const send = fn => (req, res, next) => {
+    // The handler that processes functions and values as the same
+    const send = (fn: express.RequestHandler | string) => (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
         const cb = typeof fn === "function" ? fn(req, res, next) : fn;
 
         Promise.resolve(cb).then(val => {
@@ -95,11 +105,9 @@ const createTestServer = (opts: Options = {}): Promise<TestServer> => {
     });
 
     server.close = () => pify(server.http.close.bind(server.http))().then(() => {
-            server.port = undefined;
-            server.url = undefined;
-        });
+        server.port = undefined;
+        server.url = undefined;
+    });
 
     return server.listen().then(() => server);
 };
-
-export default createTestServer;

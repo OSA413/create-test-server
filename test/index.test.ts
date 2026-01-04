@@ -1,8 +1,9 @@
 
-import createTestServer from '../src';
+import { createTestServer } from '../src';
 import { expect, test } from 'vitest'
 import * as querystring from 'querystring';
 import axios from 'axios';
+import express from "express";
 
 test('server instance exposes useful properties', async () => {
 	const server = await createTestServer();
@@ -118,7 +119,7 @@ test('opts.bodyParser is passed through to bodyParser', async () => {
 	const buf = Buffer.alloc(150 * 1024);
 
 	// Custom error handler so we don't dump the stack trace in the test output
-	smallServer.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+	smallServer.use((_err: any, _req: any, res: any, _next: any) => { // eslint-disable-line no-unused-vars
 		res.status(500).end();
 	});
 

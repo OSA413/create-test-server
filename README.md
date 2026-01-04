@@ -33,7 +33,7 @@ npx jsr add @osa413/create-test-server
 **Forward slash at the beginning of endpoint name is important**
 
 ```js
-import createTestServer from "@osa413/create-test-server";
+import { createTestServer } from "@osa413/create-test-server";
 
 const server = await createTestServer();
 console.log(server.url);
@@ -68,9 +68,9 @@ You can use `createTestServer()` with your favourite test runners, such as Jest 
 You can create a separate server per test:
 
 ```js
-import {test, expect} from 'vitest';
+import { test, expect } from 'vitest';
 import axios from 'axios';
-import createTestServer from "@osa413/create-test-server";
+import { createTestServer } from "@osa413/create-test-server";
 
 test(async () => {
   const server = await createTestServer();
