@@ -7,11 +7,13 @@ import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
 // Thank @midgleyc for providing the type definitions
+/** The test server itself */
 export type TestServer = TestServerWrapper
     & Omit<express.Express, 'listen'>
     & {get: (url: string, response: unknown) => void};
 
-export interface Options {
+/** Options that can be provided to the `createTestServer` function */
+export interface TestServerOptions {
     /**
      * Body parser options object to be passed to `body-parser` methods.
      *
@@ -23,6 +25,7 @@ export interface Options {
         & OptionsUrlencoded;
 }
 
+/** Internal wrapper for the test server */
 export interface TestServerWrapper {
     /**
      * The url you can reach the HTTP server on.
@@ -61,7 +64,8 @@ export interface TestServerWrapper {
     close: () => Promise<void>;
 }
 
-export const createTestServer = (opts: Options = {}): Promise<TestServer> => {
+/** Creates the test server that you can use it the tests */
+export const createTestServer = (opts: TestServerOptions = {}): Promise<TestServer> => {
     const _express = express();
     const server = _express as never as TestServer;
     server.http = http.createServer(_express);

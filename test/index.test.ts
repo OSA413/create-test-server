@@ -3,7 +3,6 @@ import { createTestServer } from '../src';
 import { expect, test } from 'vitest'
 import * as querystring from 'querystring';
 import axios from 'axios';
-import express from "express";
 
 test('server instance exposes useful properties', async () => {
 	const server = await createTestServer();
@@ -119,7 +118,7 @@ test('opts.bodyParser is passed through to bodyParser', async () => {
 	const buf = Buffer.alloc(150 * 1024);
 
 	// Custom error handler so we don't dump the stack trace in the test output
-	smallServer.use((_err: any, _req: any, res: any, _next: any) => { // eslint-disable-line no-unused-vars
+	smallServer.use((_err: any, _req: any, res: any, _next: any) => {
 		res.status(500).end();
 	});
 
@@ -134,15 +133,13 @@ test('opts.bodyParser is passed through to bodyParser', async () => {
 	});
 
 	// TODO: Rewrite
-	// await t.throws(got.post(smallServer.url, {
-	// 	headers: { 'content-type': 'application/octet-stream' },
-	// 	body: buf
-	// }));
+	await expect(axios.post(smallServer.url!, buf, {
+		headers: { 'content-type': 'application/octet-stream' },
+	})).rejects.toThrow("500")
 
-	// await t.notThrows(got.post(bigServer.url, {
-	// 	headers: { 'content-type': 'application/octet-stream' },
-	// 	body: buf
-	// }));
+	await expect(axios.post(bigServer.url!, buf, {
+		headers: { 'content-type': 'application/octet-stream' },
+	})).resolves.toMatchObject({status: 200});
 });
 
 test('if opts.bodyParser is false body parsing middleware is disabled', async () => {
