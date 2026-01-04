@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
+      - run: npm i
       - run: npm build
       - run: npm publish --provenance
         env:
