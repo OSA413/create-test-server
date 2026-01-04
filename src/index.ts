@@ -6,11 +6,21 @@ import express from "express";
 import pify from "pify";
 import bodyParser, { OptionsJson, OptionsText, OptionsUrlencoded } from "body-parser";
 
-// Thank @midgleyc for providing the type definitions
+// Thank @midgleyc for providing the initial type definitions
+
+// TODO: add proper type definition for the response function to accept rounter function, function, and literal value
+export type TestServerRouterFunction = (url: string, responseOrFunction: unknown) => void;
+
 /** The test server itself */
 export type TestServer = TestServerWrapper
     & Omit<express.Express, 'listen'>
-    & {get: (url: string, response: unknown) => void};
+    & {get: TestServerRouterFunction}
+    & {post: TestServerRouterFunction}
+    & {put: TestServerRouterFunction}
+    & {delete: TestServerRouterFunction}
+    & {options: TestServerRouterFunction}
+    & {patch: TestServerRouterFunction}
+    ;
 
 /** Options that can be provided to the `createTestServer` function */
 export interface TestServerOptions {
@@ -100,6 +110,51 @@ export const createTestServer = (opts: TestServerOptions = {}): Promise<TestServ
 
         for (const handler of handlers) {
             get(path, send(handler));
+        }
+    } as any;
+
+    const post = server.post.bind(server);
+    server.post = function () {
+        const [path, ...handlers] = [...arguments];
+
+        for (const handler of handlers) {
+            post(path, send(handler));
+        }
+    } as any;
+
+    const put = server.put.bind(server);
+    server.put = function () {
+        const [path, ...handlers] = [...arguments];
+
+        for (const handler of handlers) {
+            put(path, send(handler));
+        }
+    } as any;
+
+    const _delete = server.delete.bind(server);
+    server.delete = function () {
+        const [path, ...handlers] = [...arguments];
+
+        for (const handler of handlers) {
+            _delete(path, send(handler));
+        }
+    } as any;
+
+    const options = server.options.bind(server);
+    server.options = function () {
+        const [path, ...handlers] = [...arguments];
+
+        for (const handler of handlers) {
+            options(path, send(handler));
+        }
+    } as any;
+
+    const patch = server.patch.bind(server);
+    server.patch = function () {
+        const [path, ...handlers] = [...arguments];
+
+        for (const handler of handlers) {
+            patch(path, send(handler));
         }
     } as any;
 

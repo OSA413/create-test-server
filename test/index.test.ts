@@ -124,7 +124,7 @@ test('opts.bodyParser is passed through to bodyParser', async () => {
 
 	smallServer.post('/', (req, res) => {
 		throw new Error("This should not happen")
-		res.end();
+		res.status(418).end();
 	});
 
 	bigServer.post('/', (req, res) => {
@@ -132,7 +132,6 @@ test('opts.bodyParser is passed through to bodyParser', async () => {
 		res.end();
 	});
 
-	// TODO: Rewrite
 	await expect(axios.post(smallServer.url!, buf, {
 		headers: { 'content-type': 'application/octet-stream' },
 	})).rejects.toThrow("500")
@@ -171,7 +170,7 @@ test('support returning body directly', async () => {
 	expect(bodyAsync).toEqual('bar');
 });
 
-test('support returning body directly without wrapping in function', async () => {
+test('support returning body directly without wrapping in function - GET', async () => {
 	const server = await createTestServer();
 
 	server.get('/foo', 'bar');
@@ -179,8 +178,83 @@ test('support returning body directly without wrapping in function', async () =>
 	server.get('/async', Promise.resolve('bar'));
 
 	const bodyString = (await axios.get(server.url + '/foo')).data;
-	const bodyJson = (await axios.get(server.url + '/bar')).data;
-	const bodyAsync = (await axios.get(server.url + '/async')).data;
+	const bodyJson   = (await axios.get(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.get(server.url + '/async')).data;
+	expect(bodyString).toEqual('bar');
+	expect(bodyJson).toEqual({ foo: 'bar' });
+	expect(bodyAsync).toEqual('bar');
+});
+
+test('support returning body directly without wrapping in function - POST', async () => {
+	const server = await createTestServer();
+
+	server.post('/foo', 'bar');
+	server.post('/bar', ({ foo: 'bar' }));
+	server.post('/async', Promise.resolve('bar'));
+
+	const bodyString = (await axios.post(server.url + '/foo')).data;
+	const bodyJson   = (await axios.post(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.post(server.url + '/async')).data;
+	expect(bodyString).toEqual('bar');
+	expect(bodyJson).toEqual({ foo: 'bar' });
+	expect(bodyAsync).toEqual('bar');
+});
+
+test('support returning body directly without wrapping in function - PUT', async () => {
+	const server = await createTestServer();
+
+	server.put('/foo', 'bar');
+	server.put('/bar', ({ foo: 'bar' }));
+	server.put('/async', Promise.resolve('bar'));
+
+	const bodyString = (await axios.put(server.url + '/foo')).data;
+	const bodyJson   = (await axios.put(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.put(server.url + '/async')).data;
+	expect(bodyString).toEqual('bar');
+	expect(bodyJson).toEqual({ foo: 'bar' });
+	expect(bodyAsync).toEqual('bar');
+});
+
+test('support returning body directly without wrapping in function - PATCH', async () => {
+	const server = await createTestServer();
+
+	server.patch('/foo', 'bar');
+	server.patch('/bar', ({ foo: 'bar' }));
+	server.patch('/async', Promise.resolve('bar'));
+
+	const bodyString = (await axios.patch(server.url + '/foo')).data;
+	const bodyJson   = (await axios.patch(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.patch(server.url + '/async')).data;
+	expect(bodyString).toEqual('bar');
+	expect(bodyJson).toEqual({ foo: 'bar' });
+	expect(bodyAsync).toEqual('bar');
+});
+
+test('support returning body directly without wrapping in function - DELETE', async () => {
+	const server = await createTestServer();
+
+	server.delete('/foo', 'bar');
+	server.delete('/bar', ({ foo: 'bar' }));
+	server.delete('/async', Promise.resolve('bar'));
+
+	const bodyString = (await axios.delete(server.url + '/foo')).data;
+	const bodyJson   = (await axios.delete(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.delete(server.url + '/async')).data;
+	expect(bodyString).toEqual('bar');
+	expect(bodyJson).toEqual({ foo: 'bar' });
+	expect(bodyAsync).toEqual('bar');
+});
+
+test('support returning body directly without wrapping in function - OPTIONS', async () => {
+	const server = await createTestServer();
+
+	server.options('/foo', 'bar');
+	server.options('/bar', ({ foo: 'bar' }));
+	server.options('/async', Promise.resolve('bar'));
+
+	const bodyString = (await axios.options(server.url + '/foo')).data;
+	const bodyJson   = (await axios.options(server.url + '/bar')).data;
+	const bodyAsync  = (await axios.options(server.url + '/async')).data;
 	expect(bodyString).toEqual('bar');
 	expect(bodyJson).toEqual({ foo: 'bar' });
 	expect(bodyAsync).toEqual('bar');
