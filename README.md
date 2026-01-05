@@ -32,7 +32,7 @@ npx jsr add @osa413/create-test-server
 
 **Forward slash at the beginning of endpoint name is important**
 
-```js
+```ts
 import { createTestServer } from "@osa413/create-test-server";
 
 const server = await createTestServer();
@@ -67,7 +67,7 @@ You can use `createTestServer()` with your favourite test runners, such as Jest 
 
 You can create a separate server per test:
 
-```js
+```ts
 import { test, expect } from 'vitest';
 import axios from 'axios';
 import { createTestServer } from "@osa413/create-test-server";
@@ -85,7 +85,7 @@ test(async () => {
 
 Or share a server across multiple tests:
 
-```js
+```ts
 let server;
 
 beforeAll(async () => {
@@ -110,7 +110,7 @@ afterAll(async () => {
 
 You can also easily stop/restart the server. Notice how a new port is used when we listen again:
 
-```js
+```ts
 const server = await createTestServer();
 console.log(server.port);
 // 56711
@@ -122,6 +122,23 @@ console.log(server.port);
 await server.listen();
 console.log(server.port);
 // 56804
+```
+
+### Deno usage example
+
+```ts
+// deno test --allow-env --allow-net
+import { createTestServer } from "@osa413/create-test-server";
+import { assert } from "@std/assert"
+
+Deno.test(async function test() {
+  const server = await createTestServer();
+  server.get("/hello", "world");
+
+  assert(await (await fetch(server.url! + "/hello")).text(), "world");
+
+  await server.close();
+});
 ```
 
 ## API
