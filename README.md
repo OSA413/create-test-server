@@ -141,6 +141,22 @@ Deno.test(async function test() {
 });
 ```
 
+### Bun usage example
+
+```ts
+import { createTestServer } from "@osa413/create-test-server";
+import { expect, test } from "bun:test";
+
+test("test", async () => {
+  const server = await createTestServer();
+  server.get("/hello", "world");
+
+  expect(await (await fetch(server.url! + "/hello")).text()).toBe("world");
+
+  await server.close();
+});
+```
+
 ## API
 
 ### createTestServer([options])
